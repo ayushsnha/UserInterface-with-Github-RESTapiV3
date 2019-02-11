@@ -1,0 +1,41 @@
+<html>
+<head> 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">    
+<style>
+body {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/ReactOS_logo.svg/2000px-ReactOS_logo.svg.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 500px 300px;
+  background-position: center;
+}
+
+.c1{
+    opacity: 0.9;
+}
+
+</style>
+<title>
+</title>    
+    <div class="container">
+    <h1>ReactOS Repositories </h1>
+       
+        <% data.forEach(function(d1){ %>
+            
+            <div class="panel panel-default c1">
+                    <div class="panel-body"><h3> <a href="<%=d1["html_url"]%>" ><%=d1["name"]%></a> :
+                        <span class="label label-primary">Forks:<%=d1["forks"]%></span>
+                        <span class="label label-success">Open issues:<%=d1["open_issues"]%></span>
+                        <span class="label label-info">Watchers:<%=d1["watchers"]%></span>
+                    </h3>
+                        <p><%=d1["description"]%></p>
+                        <p><strong>Created at:</strong>><%=d1["created_at"]%></p>
+                        <p><strong>Last Updated:</strong>><%=d1["updated_at"]%></p>
+                        <h5><span class="label label-default">Language:<%=d1["language"]%></span></h5>
+                  </div>
+            </div>
+        
+    <%  })%>
+    <div>
+</head>        
+</html>    
