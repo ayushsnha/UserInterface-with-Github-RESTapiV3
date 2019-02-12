@@ -4,7 +4,6 @@ dotenv.config();
 var express = require('express'),
     app=   express();
  const PORT = process.env.PORT || 3000;
-
 var rp = require('request-promise');
 app.set('view engine','ejs');
 var key=process.env.SECRET;

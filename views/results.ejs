@@ -1,5 +1,6 @@
 <html>
 <head> 
+        
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">    
 <style>
@@ -16,27 +17,132 @@ body {
 }
 
 </style>
+
 <title>
-</title>    
+</title> 
+<body>   
     <div class="container">
     <h1>ReactOS Repositories </h1>
-       
-        <% data.forEach(function(d1){ %>
+
+<!-- --------PAGINATION------------ -->
+<nav aria-label="Page navigation">
+        <ul class="pagination">
+          <li>
+            <a id="previous-page" href="javascript:void(0)" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+
+       <div id="loop">
+            <% data.forEach(function(d1){ %>
+                
+                <div class="panel panel-default c1">
+                        <div class="panel-body"><h3> <a href="<%=d1["html_url"]%>" ><%=d1["name"]%></a> :
+                            <span class="label label-primary">Forks:<%=d1["forks"]%></span>
+                            <span class="label label-success">Open issues:<%=d1["open_issues"]%></span>
+                            <span class="label label-info">Watchers:<%=d1["watchers"]%></span>
+                        </h3>
+                            <p><%=d1["description"]%></p>
+                            <p><strong>Created at:</strong>><%=d1["created_at"]%></p>
+                            <p><strong>Last Updated:</strong>><%=d1["updated_at"]%></p>
+                            <h5><span class="label label-default">Language:<%=d1["language"]%></span></h5>
+                    </div>
+                </div>
             
-            <div class="panel panel-default c1">
-                    <div class="panel-body"><h3> <a href="<%=d1["html_url"]%>" ><%=d1["name"]%></a> :
-                        <span class="label label-primary">Forks:<%=d1["forks"]%></span>
-                        <span class="label label-success">Open issues:<%=d1["open_issues"]%></span>
-                        <span class="label label-info">Watchers:<%=d1["watchers"]%></span>
-                    </h3>
-                        <p><%=d1["description"]%></p>
-                        <p><strong>Created at:</strong>><%=d1["created_at"]%></p>
-                        <p><strong>Last Updated:</strong>><%=d1["updated_at"]%></p>
-                        <h5><span class="label label-default">Language:<%=d1["language"]%></span></h5>
-                  </div>
-            </div>
+            <%  })%>
+        </div>
+           
+           
         
-    <%  })%>
-    <div>
+        
+        
+        
+        
+        
+        
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js" integrity="sha384-7aThvCh9TypR7fIc2HV4O/nFMVCBwyIUKL8XCtKE+8xgCgl/PQGuFsvShjr74PBp" crossorigin="anonymous"></script>
+
+<!-- pagination logic in jquery -->
+<script type="text/javascript">
+    
+    'use strict'
+    var numberOfItems = $('#loop .panel').length;
+    var limitPerPage = 4; // Limit of items per each page
+    $('#loop .panel:gt(' + (limitPerPage - 1) + ')').hide(); 
+    var totalPages = Math.round(numberOfItems / limitPerPage);
+    $(".pagination").append("<li class='current-page active'><a href='javascript:void(0)'>" + 1 + "</a></li>");
+    for (var i = 2; i <= totalPages; i++) {
+  $(".pagination").append("<li class='current-page'><a href='javascript:void(0)'>" + i + "</a></li>");
+    } 
+    $(".pagination").append("<li id='next-page'><a href='javascript:void(0)' aria-label=Next><span aria-hidden=true>&raquo;</span></a></li>");
+     // Function that displays new items based on page number that was clicked
+$(".pagination li.current-page").on("click", function() {
+  // Check if page number that was clicked on is the current page that is being displayed
+  if ($(this).hasClass('active')) {
+    return false; // Return false (i.e., nothing to do, since user clicked on the page number that is already being displayed)
+  } else {
+    var currentPage = $(this).index(); // Get the current page number
+    $(".pagination li").removeClass('active'); // Remove the 'active' class status from the page that is currently being displayed
+    $(this).addClass('active'); // Add the 'active' class status to the page that was clicked on
+    $("#loop .panel").hide(); // Hide all items in loop, this case, all the list groups
+    var grandTotal = limitPerPage * currentPage; // Get the total number of items up to the page number that was clicked on
+
+    // Loop through total items, selecting a new set of items based on page number
+    for (var i = grandTotal - limitPerPage; i < grandTotal; i++) {
+      $("#loop .panel:eq(" + i + ")").show(); // Show items from the new page that was selected
+    }
+  }
+
+});         
+
+$("#next-page").on("click", function() {
+  var currentPage = $(".pagination li.active").index(); // Identify the current active page
+  // Check to make sure that navigating to the next page will not exceed the total number of pages
+  if (currentPage === totalPages) {
+    return false; // Return false (i.e., cannot navigate any further, since it would exceed the maximum number of pages)
+  } else {
+    currentPage++; // Increment the page by one
+    $(".pagination li").removeClass('active'); // Remove the 'active' class status from the current page
+    $("#loop .panel").hide(); // Hide all items in the pagination loop
+    var grandTotal = limitPerPage * currentPage; // Get the total number of items up to the page that was selected
+
+    // Loop through total items, selecting a new set of items based on page number
+    for (var i = grandTotal - limitPerPage; i < grandTotal; i++) {
+      $("#loop .panel:eq(" + i + ")").show(); // Show items from the new page that was selected
+    }
+
+    $(".pagination li.current-page:eq(" + (currentPage - 1) + ")").addClass('active'); // Make new page number the 'active' page
+  }
+});
+
+// Function to navigate to the previous page when users click on the previous-page id (previous page button)
+$("#previous-page").on("click", function() {
+  var currentPage = $(".pagination li.active").index(); // Identify the current active page
+  // Check to make sure that users is not on page 1 and attempting to navigating to a previous page
+  if (currentPage === 1) {
+    return false; // Return false (i.e., cannot navigate to a previous page because the current page is page 1)
+  } else {
+    currentPage--; // Decrement page by one
+    $(".pagination li").removeClass('active'); // Remove the 'activate' status class from the previous active page number
+    $("#loop .panel").hide(); // Hide all items in the pagination loop
+    var grandTotal = limitPerPage * currentPage; // Get the total number of items up to the page that was selected
+
+    // Loop through total items, selecting a new set of items based on page number
+    for (var i = grandTotal - limitPerPage; i < grandTotal; i++) {
+      $("#loop .panel:eq(" + i + ")").show(); // Show items from the new page that was selected
+    }
+
+    $(".pagination li.current-page:eq(" + (currentPage - 1) + ")").addClass('active'); // Make new page number the 'active' page
+  }
+});
+
+
+</script>
+</body>        
 </head>        
 </html>    
