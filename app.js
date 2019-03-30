@@ -9,7 +9,7 @@ app.set('view engine','ejs');
 var key=process.env.SECRET;
 
 var repos = {
-    uri: 'https://api.github.com/users/reactos/repos',
+    uri: 'https://api.github.com/users/ayushsnha/repos',
     qs: {
         access_token: key, // -> uri + '?access_token=xxxxx%20xxxxx'
         // per_page:5,
@@ -25,17 +25,17 @@ var repos = {
 };
 
 
-// var commits = {
-//     uri: 'https://api.github.com/repos/ayushsnha/Authentication_node_passportJS/commits',
-//     qs: {
-//         access_token: key, // -> uri + '?access_token=xxxxx%20xxxxx'
+var commits = {
+    uri: 'https://api.github.com/repos/ayushsnha/Authentication_node_passportJS/commits',
+    qs: {
+        access_token: key, // -> uri + '?access_token=xxxxx%20xxxxx'
         
-//     },
-//     headers: {
-//         'User-Agent': 'Request-Promise'
-//     },
-//     json: true // Automatically parses the JSON string in the response
-// };
+    },
+    headers: {
+        'User-Agent': 'Request-Promise'
+    },
+    json: true // Automatically parses the JSON string in the response
+};
 
 
 app.get('/',(req,res)=>{
@@ -55,23 +55,23 @@ app.get('/',(req,res)=>{
 
 
 
-// app.get('/ak',(req,res)=>{
-//     // console.log(req);
+app.get('/a',(req,res)=>{
+    // console.log(req);
    
-//     rp(commits)
-//     .then(function (body) {
-//         // console.log(body);
-//         res.send(body);
-//         // res.render('results',{data:data});
-//     })
-//     .catch(function (err) {
-//         console.log(err);
-//     });
+    rp(commits)
+    .then(function (body) {
+        // console.log(body);
+        res.send(body);
+        // res.render('results',{data:data});
+    })
+    .catch(function (err) {
+        console.log(err);
+    });
         
         
      
     
-// });
+});
 
 
 app.listen(PORT,()=>{
